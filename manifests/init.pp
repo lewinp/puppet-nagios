@@ -30,6 +30,10 @@ class nagios {
             $nagios_cfgdir = '/etc/nagios3'
             include nagios::debian
         }
+        'ubuntu': {
+            $nagios_cfgdir = '/etc/nagios3'
+            include nagios::ubuntu
+        }
         default: { fail("No such operatingsystem: ${::operatingsystem} yet defined") }
     }
 }
