@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# RESOURCE.CFG - Sample Resource File for Nagios 2.9
+# RESOURCE.CFG - Sample Resource File for Nagios 3.3.1
 #
 # Last Modified: 09-10-2003
 #
@@ -26,7 +26,7 @@
 $USER1$=/usr/lib/nagios/plugins
 
 # Sets $USER2$ to be the path to event handlers
-#$USER2$=/usr/lib64/nagios/plugins/eventhandlers
+#$USER2$=/usr/lib/nagios/plugins/eventhandlers
 
 # Store some usernames and passwords (hidden from the CGIs)
 #$USER3$=someuser
