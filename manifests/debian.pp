@@ -12,7 +12,7 @@ class nagios::debian inherits nagios::base {
         hasstatus => true,
     }
 
-    File['nagios_htpasswd', 'nagios_cgi_cfg'] { group => 'www-data' }
+    File['nagios_cgi_cfg'] { group => 'www-data' }
 
     file { "${nagios::defaults::vars::int_nagios_cfgdir}/stylesheets":
         ensure => directory,

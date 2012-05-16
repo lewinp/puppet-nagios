@@ -37,13 +37,6 @@ class nagios::base {
         notify => Service['apache'],
     }
 
-    file { 'nagios_htpasswd':
-        path => "${nagios::defaults::vars::int_nagios_cfgdir}/htpasswd.users",
-        source => [ "puppet:///modules/site-nagios/htpasswd.users",
-                    "puppet:///modules/nagios/htpasswd.users" ],
-        mode => 0640, owner => root, group => apache;
-    }
-
     file { 'nagios_private':
         path => "${nagios::defaults::vars::int_nagios_cfgdir}/private/",
         ensure => directory,

@@ -15,6 +15,8 @@
 #
 
 class nagios {
+    include nagios::params
+
     case $nagios_httpd {
         'absent': { }
         'lighttpd': { include lighttpd }
