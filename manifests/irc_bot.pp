@@ -1,7 +1,7 @@
 class nagios::irc_bot {
-    if ( ! ($nagios_nsa_server and $nagios_nsa_nickname and $nagios_nsa_channel) ) {
-        fail("Please provide values at least for \$nagios_nsa_server, \$nagios_nsa_nickname and \$nagios_nsa_channel")
-    }
+  if ( ! ($nagios_nsa_server and $nagios_nsa_nickname and $nagios_nsa_channel) ) {
+    fail("Please provide values at least for \$nagios_nsa_server, \$nagios_nsa_nickname and \$nagios_nsa_channel")
+  }
 
     $nagios_nsa_socket = $nagios_nsa_socket ? {
         '' => $::operatingsystem ? {
@@ -17,14 +17,7 @@ class nagios::irc_bot {
         },
         default => $nagios_nsa_pidfile,
     }
-    $nagios_nsa_port = $nagios_nsa_port ? {
-        '' => '6667',
-        default => $nagios_nsa_port,
-    }
-    $nagios_nsa_realname = $nagios_nsa_realname ? {
-        '' => 'Nagios',
-        default => $nagios_nsa_realname,
-    }
+  }
 
     if (! $nagios_nsa_password) {
         $nagios_nsa_password = ''
