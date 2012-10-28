@@ -1,7 +1,7 @@
 class nagios::apache {
   include nagios
   include apache
-  include apache::php
+  include apache::mod::php
 
   case $::osfamily {
     RedHat: {

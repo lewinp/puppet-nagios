@@ -4,7 +4,9 @@ class nagios::base {
 
     package { 'nagios':
         alias => 'nagios',
-        ensure => present,   
+        ensure => present,
+        /* TODO: Very dirty workaround (Package install fail if nagios objects are not present ) */
+        require => Nagios_command[check-host-alive],
     }
 
     service { 'nagios':
@@ -41,7 +43,7 @@ class nagios::base {
                     "puppet:///modules/nagios/configs/${::operatingsystem}/cgi.cfg",
                     "puppet:///modules/nagios/configs/cgi.cfg" ],
         mode => '0644', owner => 'root', group => 0,
-        notify => Service['apache'],
+        notify => Service['httpd'],
     }
 
     file { 'nagios_private':
@@ -172,6 +174,25 @@ class nagios::base {
         notify => Service['nagios'],
         mode => 0644, owner => root, group => 0;
     }
+
+    /* Workaround Ubuntu */
+    file{[
+      "${nagios::defaults::vars::int_nagios_cfgdir}/resource.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/generic-service_nagios2.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/contacts_nagios2.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/hostgroups_nagios2.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/timeperiods_nagios2.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/generic-host_nagios2.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/extinfo_nagios2.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/localhost_nagios2.cfg", 
+      "${nagios::defaults::vars::int_nagios_cfgdir}/conf.d/services_nagios2.cfg", 
+    ]:
+      ensure => file,
+      content => '',
+      mode => 0644, owner => root, group => 0,
+      notify => Package['nagios']
+    }
+
 
     # manage nagios cfg files
     # must be defined after exported resource overrides and cfg file defs
