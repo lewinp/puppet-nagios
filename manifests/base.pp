@@ -2,11 +2,16 @@ class nagios::base {
     # include the variables
     include nagios::defaults::vars
 
+  group { 'nagios':
+    ensure => 'present',
+    gid    => '117',
+  }
+
     package { 'nagios':
         alias => 'nagios',
         ensure => present,
         /* TODO: Very dirty workaround (Package install fail if nagios objects are not present ) */
-        require => Nagios_command[check-host-alive],
+        require => Nagios_command['check-host-alive'],
     }
 
     service { 'nagios':
@@ -52,6 +57,7 @@ class nagios::base {
         purge => true,
         recurse => true,
         notify => Service['nagios'],
+        require => Group['nagios'],
         mode => '0750', owner => root, group => nagios;
     }
 
@@ -60,6 +66,7 @@ class nagios::base {
         source => [ "puppet:///modules/site-nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}",
                     "puppet:///modules/nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}" ],
         notify => Service['nagios'],
+        require => Group['nagios'],
         owner => root, group => nagios, mode => '0640';
     }
 
@@ -69,6 +76,7 @@ class nagios::base {
         purge => true,
         recurse => true,
         notify => Service['nagios'],
+        require => Group['nagios'],
         mode => '0750', owner => root, group => nagios;
     }
     Nagios_command <<||>>
@@ -189,7 +197,8 @@ class nagios::base {
     ]:
       ensure => file,
       content => '',
-      mode => 0644, owner => root, group => 0,
+      require => Group['nagios'],
+      mode => 0644, owner => root, group => nagios,
       notify => Package['nagios']
     }
 

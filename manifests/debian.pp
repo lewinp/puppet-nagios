@@ -5,6 +5,8 @@ class nagios::debian inherits nagios::base {
     package { [ 'nagios-plugins', 'nagios-snmp-plugins','nagios-nrpe-plugin' ]:
         ensure => 'present',
         notify => Service['nagios'],
+        /* Dirty workaround */
+        require => Nagios_command['check-host-alive'],
     }
 
     Service['nagios'] {

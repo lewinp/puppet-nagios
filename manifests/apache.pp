@@ -32,8 +32,7 @@ class nagios::apache {
   file { 'nagios_htpasswd':
     path => $nagios::params::htpasswd,
     ensure => file,
-    content => template('nagios/apache/htpasswd.erb',
-                        'site-nagios/apache/htpasswd.erb'),
+    content => '',
     mode => 0640,
     owner => root,
     group => $apache::params::group,
