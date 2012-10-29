@@ -11,6 +11,8 @@
 # Sample Usage:
 #
 class nagios::params {
+  $nagios_httpd = 'apache'
+
   $htpasswd = $::osfamily ? {
     RedHat => '/etc/nagios/passwd',
     Debian => '/etc/nagios3/htpasswd.users',

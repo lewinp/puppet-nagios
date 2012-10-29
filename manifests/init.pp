@@ -14,28 +14,28 @@
 # the Free Software Foundation.
 #
 
-class nagios {
-    include nagios::params
-
-    case $nagios_httpd {
-        'absent': { }
-        'lighttpd': { include lighttpd }
-        'apache': { include apache }
-        default: { include apache }
+class nagios (
+  $nagios_httpd = $nagios::params::nagios_httpd,
+) inherits nagios::params {
+  case $nagios_httpd {
+    'absent': { }
+    'lighttpd': { include lighttpd }
+    'apache': { include apache }
+     default: { include apache }
+  }
+  case $::operatingsystem {
+    'centos': {
+      $nagios_cfgdir = '/etc/nagios'
+      include nagios::base::centos
     }
-    case $::operatingsystem {
-        'centos': {
-            $nagios_cfgdir = '/etc/nagios'
-            include nagios::centos
-        }
-        'debian': {
-            $nagios_cfgdir = '/etc/nagios3'
-            include nagios::debian
-        }
-        'ubuntu': {
-            $nagios_cfgdir = '/etc/nagios3'
-            include nagios::ubuntu
-        }
-        default: { fail("No such operatingsystem: ${::operatingsystem} yet defined") }
+    'debian': {
+      $nagios_cfgdir = '/etc/nagios3'
+      include nagios::base::debian
     }
+    'ubuntu': {
+      $nagios_cfgdir = '/etc/nagios3'
+      include nagios::base::ubuntu
+    }
+    default: { fail("No such operatingsystem: ${::operatingsystem} yet defined") }
+  }
 }

@@ -1,4 +1,4 @@
 class nagios::lighttpd {
-    $nagios_httpd = 'lighttpd'
-    include nagios
+  $nagios_httpd = 'lighttpd'
+  include nagios
 }

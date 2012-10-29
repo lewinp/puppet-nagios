@@ -1,3 +1,3 @@
 class nagios::nsca {
-    include nagios::nsca::server
+  include nagios::nsca::server
 }
