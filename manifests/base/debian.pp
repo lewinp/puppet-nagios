@@ -28,7 +28,7 @@ class nagios::base::debian (
     group => 'www-data'
   }
 
-  file { "${nagios::defaults::vars::int_nagios_cfgdir}/stylesheets":
+  file { "${nagios::base::nagios_cfgdir}/stylesheets":
     ensure => directory,
     purge => false,
     recurse => true,

@@ -2,10 +2,10 @@
 # administering a machine and NRPE is running in xinetd.
 class nagios::nrpe::xinetd inherits base {
 
-    Service ["nagios-nrpe-server"] {
-	    ensure    => stopped,
-    }
+  Service ["nagios-nrpe-server"] {
+   ensure    => stopped,
+  }
 
-    # TODO manage the xinetd config file that glues with NRPE
+  # TODO manage the xinetd config file that glues with NRPE
 
 }

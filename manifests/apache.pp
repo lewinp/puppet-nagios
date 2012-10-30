@@ -13,7 +13,7 @@ class nagios::apache {
       }
     }
     Debian: {
-      file { "${nagios::defaults::vars::int_nagios_cfgdir}/apache2.conf":
+      file { "${nagios::base::nagios_cfgdir}/apache2.conf":
         ensure => present,
         source => ["puppet:///modules/site-nagios/configs/${::fqdn}/apache2.conf",
                    'puppet:///modules/site-nagios/configs/apache2.conf',
@@ -23,8 +23,8 @@ class nagios::apache {
 
       file { "${apache::params::vdir}/nagios3.conf":
         ensure => link,
-        target => "${nagios::defaults::vars::int_nagios_cfgdir}/apache2.conf",
-        require => File["${nagios::defaults::vars::int_nagios_cfgdir}/apache2.conf"],
+        target => "${nagios::base::nagios_cfgdir}/apache2.conf",
+        require => File["${nagios::base::nagios_cfgdir}/apache2.conf"],
       }
     }
   }
