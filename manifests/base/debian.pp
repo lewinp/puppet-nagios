@@ -12,11 +12,19 @@ class nagios::base::debian (
     'nagios-nrpe-plugin',
   ]
 
-  package { $plugins_packages:
-    ensure => 'present',
-    notify => Service['nagios'],
-    /* Dirty workaround */
-    require => Nagios_command['check-host-alive'],
+  if $nagios::use_defaults {
+    package { $plugins_packages:
+      ensure => 'present',
+      notify => Service['nagios'],
+      /* Dirty workaround */
+      require => Nagios_command['check-host-alive'],
+    }
+  }
+  else {
+    package { $plugins_packages:
+      ensure => 'present',
+      notify => Service['nagios'],
+    }
   }
 
   Service['nagios'] {
@@ -24,8 +32,10 @@ class nagios::base::debian (
     hasstatus => true,
   }
 
-  File['nagios_cgi_cfg'] {
-    group => 'www-data'
+  if $nagios::puppet_manage_config {
+    File['nagios_cgi_cfg'] {
+      group => 'www-data'
+    }
   }
 
   file { "${nagios::base::nagios_cfgdir}/stylesheets":

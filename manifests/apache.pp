@@ -1,7 +1,20 @@
-class nagios::apache {
-  include nagios
+class nagios::apache (
+  $puppet_manage_config = $nagios::apache::params::puppet_manage_config,
+  $use_defaults  = $nagios::apache::params::use_defaults,
+) inherits nagios::apache::params {
+  
+  class { 'nagios':
+    nagios_httpd         => 'apache',
+    puppet_manage_config => $puppet_manage_config,
+    use_defaults         => $use_defaults,
+  }
+
   include apache
   include apache::mod::php
+  
+  /*fixme! */
+  $vdir  = '/etc/apache2/sites-enabled/'
+  $group = 'www-data'
 
   case $::osfamily {
     RedHat: {
@@ -21,7 +34,7 @@ class nagios::apache {
                    "puppet:///modules/nagios/apache/${::osfamily}/apache2.conf"],
       }
 
-      file { "${apache::params::vdir}/nagios3.conf":
+      file { "$vdir/nagios3.conf":
         ensure => link,
         target => "${nagios::base::nagios_cfgdir}/apache2.conf",
         require => File["${nagios::base::nagios_cfgdir}/apache2.conf"],
@@ -35,6 +48,6 @@ class nagios::apache {
     content => '',
     mode => 0640,
     owner => root,
-    group => $apache::params::group,
+    group => $group,
   }
 }

@@ -15,7 +15,9 @@
 #
 
 class nagios (
-  $nagios_httpd = $nagios::params::nagios_httpd,
+  $nagios_httpd         = $nagios::params::nagios_httpd,
+  $puppet_manage_config = $nagios::params::puppet_manage_config,
+  $use_defaults         = $nagios::params::use_defaults,
 ) inherits nagios::params {
   case $nagios_httpd {
     'absent': { }

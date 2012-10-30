@@ -18,4 +18,8 @@ class nagios::params {
     Debian => '/etc/nagios3/htpasswd.users',
     default => '/etc/nagios/passwd',
   }
+
+  $puppet_manage_config = true
+
+  $use_defaults  = true
 }

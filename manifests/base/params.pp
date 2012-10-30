@@ -7,4 +7,6 @@ class nagios::base::params {
       $nagios_cfgdir = '/etc/nagios3'
     }
   }
+
+  $puppet_manage_config = true
 }

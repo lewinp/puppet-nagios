@@ -25,7 +25,7 @@ class nagios::ndoutils (
       mode    => '0600',
       content => template('nagios/ndoutils/ndo2db.cfg.erb'),
       notify  => Service['ndoutils'],
-      require => Package['ndoutils'],
+      require => [ Package['ndoutils'], File['nagios_main_cfg']],
     }
 
     file { '/etc/nagios3/ndomod.cfg':
@@ -36,7 +36,7 @@ class nagios::ndoutils (
       mode    => '0644',
       content => template('nagios/ndoutils/ndomod.cfg.erb'),
       notify  => Service['ndoutils'],
-      require => Package['ndoutils'],
+      require => [ Package['ndoutils'], File['nagios_main_cfg']],
     }
 
     file { '/etc/default/ndoutils':
@@ -59,6 +59,7 @@ class nagios::ndoutils (
       mode    => '0600',
       content => template('nagios/ndoutils/ndo2db.cfg.erb'),
       notify  => Service['ndoutils'],
+      require => File['nagios_main_cfg'],
     }
 
     file { '/etc/nagios3/ndomod.cfg':
@@ -69,6 +70,7 @@ class nagios::ndoutils (
       mode    => '0644',
       content => template('nagios/ndoutils/ndomod.cfg.erb'),
       notify  => Service['ndoutils'],
+      require => File['nagios_main_cfg'],
     }
 
     file { '/etc/default/ndoutils':
