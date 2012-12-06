@@ -45,7 +45,10 @@ class nagios::apache (
   file { 'nagios_htpasswd':
     path => $nagios::params::htpasswd,
     ensure => file,
-    content => '',
+    source => ["puppet:///modules/site-nagios/configs/${::fqdn}/nagios_htpasswd",
+               'puppet:///modules/site-nagios/configs/nagios_htpasswd',
+               "puppet:///modules/site-nagios/apache/${::osfamily}/nagios_htpasswd",
+               "puppet:///modules/nagios/apache/${::osfamily}/nagios_htpasswd"],
     mode => 0640,
     owner => root,
     group => $group,
