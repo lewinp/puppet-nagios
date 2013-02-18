@@ -13,16 +13,36 @@ class nagios::apache (
   include apache::mod::php
   
   /*fixme! */
-  $vdir  = '/etc/apache2/sites-enabled/'
-  $group = 'www-data'
+  #$vdir  = '/etc/apache2/sites-enabled/'
+  #'www-data'
+  case $::osfamily {
+    RedHat: {
+      $vdir  = '/etc/httpd/conf.d'
+      $group = 'apache'
+      $owner = 'apache'
+    }
+    Debian: {
+      $vdir  = '/etc/apache2/sites-enabled'
+      $group = 'www-data'
+      $owner = 'www-data'
+    }
+  }
 
   case $::osfamily {
     RedHat: {
-      apache::conf { 'nagios':
+      file { "${nagios::base::nagios_cfgdir}/apache2.conf":
+      #apache::conf { 'nagios':
+        ensure => present,
         source => ["puppet:///modules/site-nagios/configs/${::fqdn}/apache2.conf",
                    'puppet:///modules/site-nagios/configs/apache2.conf',
                    "puppet:///modules/site-nagios/apache/${::osfamily}/apache2.conf",
                    "puppet:///modules/nagios/apache/${::osfamily}/apache2.conf"],
+      }
+
+      file { "$vdir/nagios3.conf":
+        ensure => link,
+        target => "${nagios::base::nagios_cfgdir}/apache2.conf",
+        require => File["${nagios::base::nagios_cfgdir}/apache2.conf"],
       }
     }
     Debian: {
@@ -34,6 +54,7 @@ class nagios::apache (
                    "puppet:///modules/nagios/apache/${::osfamily}/apache2.conf"],
       }
 
+      notify{"$vdir/nagios3.conf": }
       file { "$vdir/nagios3.conf":
         ensure => link,
         target => "${nagios::base::nagios_cfgdir}/apache2.conf",
@@ -50,7 +71,7 @@ class nagios::apache (
                "puppet:///modules/site-nagios/apache/${::osfamily}/nagios_htpasswd",
                "puppet:///modules/nagios/apache/${::osfamily}/nagios_htpasswd"],
     mode => 0640,
-    owner => root,
+    owner => $owner,
     group => $group,
   }
 }

@@ -3,7 +3,8 @@ class nagios::base::centos (
 ) inherits nagios::base {
 
   $plugins_packages = [
-    'nagios-plugins',
+    'nagios-plugins-all',
+/*     'nagios-plugins',
     'nagios-plugins-smtp',
     'nagios-plugins-http',
     'nagios-plugins-ssh',
@@ -21,7 +22,7 @@ class nagios::base::centos (
     'nagios-plugins-nagios',
     'nagios-plugins-perl',
     'nagios-plugins-ntp',
-    'nagios-plugins-snmp',
+    'nagios-plugins-snmp',*/
   ]
 
   package { $plugins_packages:
@@ -29,7 +30,7 @@ class nagios::base::centos (
     notify => Service['nagios'],
   }
 
-  Service[nagios]{
+  Service['nagios']{
     hasstatus => true,
   }
 
